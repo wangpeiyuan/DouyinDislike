@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">DouyinDislike</string>
+    <string name="accessibility_service_label">抖音批量取消喜欢</string>
+    <string name="accessibility_service_description">开启该服务后，在抖音喜欢页面中会自动批量取消喜欢。
+        \n\n个别型号的手机，退出 APP 后，手机会关闭该功能导致失效。出现该情况时，您可以尝试关闭并重新打开该服务，或者重启手机。</string>
+    <string name="open_service_title">开启抖音批量取消喜欢服务</string>
+    <string name="open_service_msg">到 [ 设置 -> 辅助功能 -> 无障碍 ] 开启抖音批量取消喜欢服务</string>
+    <string name="open_service_confirm">开启</string>
+    <string name="open_service_cancel">取消</string>
+    <string name="open_service">开启服务</string>
+    <string name="close_service">关闭服务</string>
+    <string name="like_pos">like_pos</string>
+    <string name="location_like_pos">定位喜欢按钮位置</string>
+</resources>
