@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DouyinDislike</string>
+    <string name="app_name">抖音自动取消喜欢</string>
     <string name="accessibility_service_label">抖音批量取消喜欢</string>
     <string name="accessibility_service_description">开启该服务后，在抖音喜欢页面中会自动批量取消喜欢。
         \n\n个别型号的手机，退出 APP 后，手机会关闭该功能导致失效。出现该情况时，您可以尝试关闭并重新打开该服务，或者重启手机。</string>
@@ -7,8 +7,22 @@
     <string name="open_service_msg">到 [ 设置 -> 辅助功能 -> 无障碍 ] 开启抖音批量取消喜欢服务</string>
     <string name="open_service_confirm">开启</string>
     <string name="open_service_cancel">取消</string>
-    <string name="open_service">开启服务</string>
-    <string name="close_service">关闭服务</string>
-    <string name="like_pos">like_pos</string>
-    <string name="location_like_pos">定位喜欢按钮位置</string>
+    <string name="open_service">开启自动取消服务</string>
+    <string name="close_service">关闭自动取消服务</string>
+    <string name="location_btn">定位按钮</string>
+    <string name="location_like_pos_show">显示定位按钮</string>
+    <string name="location_like_pos_hide">关闭定位按钮</string>
+    <string name="open_service_condition">请先定位抖音中喜欢按钮的位置，确保自动取消能正常操作</string>
+    <string name="instructions_for_use"><![CDATA[<b>使用方法:</b>
+    <br>1.首次使用<b>（再次使用可跳到步骤 4）</b>，先点击<font color="#E63946">显示定位按钮</font>，
+    需要授予悬浮窗的权限，<b>此权限仅用来定位抖音喜欢按钮位置，不作其他用途。</b>授予权限之后，
+    出现定位图标 <img src="%1d" />。
+    <br>2.打开抖音，到随意某个[视频页面]，移动 <img src="%2d" /> 到喜欢按钮上面，完成之后，切回 APP 。
+    <br>3.关闭定位按钮（可选），主要防止误触导致出错。
+    <br>4.点击<font color="#E63946">开启自动取消服务</font>按钮，跳转到无障碍权限授予界面，
+    找到<font color="#E63946">抖音批量取消喜欢</font>服务，确认勾选打开。
+    <br>5.打开抖音，到 [我] 页面，点击选中 [喜欢]，即可自动取消喜欢。
+    <font color="#E63946"><b>需要等待自动操作，过程中最好不要触碰，如若失败请重新尝试以上步骤。</b></font>
+    <br>6.完成之后点击<font color="#E63946">关闭自动取消服务</font>按钮，取消服务。
+    ]]></string>
 </resources>

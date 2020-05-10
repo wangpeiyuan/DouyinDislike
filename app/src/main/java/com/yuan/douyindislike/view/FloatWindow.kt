@@ -1,10 +1,12 @@
-package com.yuan.douyindislike
+package com.yuan.douyindislike.view
 
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.*
+import com.yuan.douyindislike.R
+import com.yuan.douyindislike.ktx.setLikePos
 import java.lang.reflect.Field
 
 
@@ -17,7 +19,7 @@ class FloatWindow(private val context: Context) : View.OnTouchListener {
     private var mWindowManager: WindowManager
 
     private var mFloatLayout: View =
-        LayoutInflater.from(context).inflate(R.layout.layout_float_window, null, false)
+        LayoutInflater.from(context).inflate(R.layout.layout_float_window, null)
 
     private var mInViewX = 0f
     private var mInViewY = 0f
@@ -26,6 +28,8 @@ class FloatWindow(private val context: Context) : View.OnTouchListener {
     private var mInScreenX = 0f
     private var mInScreenY = 0f
 
+    private var mIsShow = false
+
     private val mSysHeight = getSysBarHeight()
 
     init {
@@ -33,13 +37,14 @@ class FloatWindow(private val context: Context) : View.OnTouchListener {
 
         mWindowParams = WindowManager.LayoutParams()
         mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        if (Build.VERSION.SDK_INT >= 26) { //8.0新特性
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //8.0新特性
             mWindowParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             mWindowParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
         mWindowParams.format = PixelFormat.RGBA_8888
-        mWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        mWindowParams.flags =
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
         mWindowParams.gravity = Gravity.START or Gravity.TOP
         mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT
         mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT
@@ -78,19 +83,30 @@ class FloatWindow(private val context: Context) : View.OnTouchListener {
     }
 
     fun showFloatWindow() {
+        val metrics = DisplayMetrics()
+        //默认固定位置，靠屏幕右边缘的中间
+        mWindowManager.defaultDisplay.getMetrics(metrics)
+        showFloatWindow(
+            metrics.widthPixels - metrics.widthPixels / 8,
+            metrics.heightPixels / 2 - mSysHeight
+        )
+    }
+
+    fun showFloatWindow(x: Int, y: Int) {
         if (mFloatLayout.parent == null) {
-            val metrics = DisplayMetrics()
-            //默认固定位置，靠屏幕右边缘的中间
-            mWindowManager.defaultDisplay.getMetrics(metrics)
-            mWindowParams.x = metrics.widthPixels
-            mWindowParams.y = metrics.heightPixels / 2 - mSysHeight
+            mWindowParams.x = x
+            mWindowParams.y = y
             mWindowManager.addView(mFloatLayout, mWindowParams)
         }
+        mIsShow = true
     }
 
     fun hideFloatWindow() {
+        mIsShow = false
         if (mFloatLayout.parent != null) mWindowManager.removeView(mFloatLayout)
     }
+
+    fun isShow(): Boolean = mIsShow
 
     // 获取系统状态栏高度
     private fun getSysBarHeight(): Int {

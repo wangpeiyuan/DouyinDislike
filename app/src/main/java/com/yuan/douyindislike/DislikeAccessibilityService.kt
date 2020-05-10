@@ -7,6 +7,7 @@ import android.graphics.Path
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.yuan.douyindislike.Helper.log
+import com.yuan.douyindislike.ktx.getLikePos
 
 
 /**

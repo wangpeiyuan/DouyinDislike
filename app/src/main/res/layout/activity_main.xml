@@ -11,25 +11,67 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.75" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_open_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_btn_selected"
+        android:gravity="center"
+        android:padding="15dp"
         android:text="@string/open_service"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_like_pos" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_like_pos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/location_like_pos"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_btn_selected"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/location_like_pos_show"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_open_service" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_instructions_for_use"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_text"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="3dp"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                tools:text="TextView" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
