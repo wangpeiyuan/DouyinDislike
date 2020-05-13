@@ -2,11 +2,12 @@ package com.yuan.douyindislike
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
-import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.graphics.Path
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.yuan.douyindislike.Helper.log
+import com.yuan.douyindislike.ktx.back
+import com.yuan.douyindislike.ktx.gestureOnScreen
 import com.yuan.douyindislike.ktx.getLikePos
 
 
@@ -168,36 +169,14 @@ class DislikeAccessibilityService : AccessibilityService() {
         val path = Path()
         path.moveTo(x, y)
         path.lineTo(x, y)
-        /**
-         * 参数GestureDescription：翻译过来就是手势的描述，如果要实现模拟，首先要描述你的腰模拟的手势嘛
-         * 参数GestureResultCallback：翻译过来就是手势的回调，手势模拟执行以后回调结果
-         * 参数handler：大部分情况我们不用的话传空就可以了
-         */
-        dispatchGesture(
-            /**
-             * 参数path：笔画路径
-             * 参数startTime：时间 (以毫秒为单位)，从手势开始到开始笔划的时间，非负数
-             * 参数duration：笔划经过路径的持续时间(以毫秒为单位)，非负数
-             */
-            GestureDescription.Builder()
-                .addStroke(StrokeDescription(path, 300, 100)).build(),
-            object : GestureResultCallback() {
-                override fun onCompleted(gestureDescription: GestureDescription?) {
-                    back()
-                }
-            }, null
-        )
+        gestureOnScreen(path, 300, 100, object : GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                back()
+            }
+        })
     }
 
     private fun nodeClick(nodeInfo: AccessibilityNodeInfo) {
         nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-    }
-
-    private fun nodeScrollForward(nodeInfo: AccessibilityNodeInfo) {
-        nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
-    }
-
-    private fun back() {
-        performGlobalAction(GLOBAL_ACTION_BACK)
     }
 }
