@@ -22,6 +22,7 @@ class DislikeAccessibilityService : AccessibilityService() {
 
     private var isInMain = true
     private var isInVideoDetail = false
+    private var isInFollow = false
 
     /**
      * 中断服务的回调
@@ -38,20 +39,29 @@ class DislikeAccessibilityService : AccessibilityService() {
         //根据事件回调类型进行处理
         val eventType = event.eventType
 
+        //获取窗口节点（根节点）
+        val nodeInfo: AccessibilityNodeInfo? = rootInActiveWindow ?: return
+
         //当窗口的状态发生改变时
         if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             if (isInVideoDetail(event)) {
                 isInVideoDetail = true
                 isInMain = false
+                isInFollow = false
             } else if (isInMain(event)) {
                 isInMain = true
                 isInVideoDetail = false
+                isInFollow = false
+            } else if (isInFollow(event)) {
+                isInFollow = true
+                isInMain = false
+                isInVideoDetail = false
             }
-            log("isInMain = $isInMain isInVideoDetail = $isInVideoDetail")
+            log(
+                "WINDOW_STATE_CHANGED:> isInMain = $isInMain;isInVideoDetail = $isInVideoDetail;" +
+                        "isInFollow = $isInFollow"
+            )
         }
-
-        //获取窗口节点（根节点）
-        val nodeInfo: AccessibilityNodeInfo? = rootInActiveWindow ?: return
 
         //如果选中 喜欢 tab
         if (isInMain) {
@@ -73,6 +83,12 @@ class DislikeAccessibilityService : AccessibilityService() {
             if (likePos[0] == 0f && likePos[1] == 0f) return
             log("disLikeClick: (${likePos[0]},${likePos[1]})")
             dispatchGestureClick(likePos[0], likePos[1])
+        } else if (isInFollow) {
+            val findFollowedButton = findFollowedButton(nodeInfo)
+            if (findFollowedButton != null) {
+                log("click followed")
+                nodeClick(findFollowedButton)
+            }
         }
     }
 
@@ -82,6 +98,10 @@ class DislikeAccessibilityService : AccessibilityService() {
 
     private fun isInVideoDetail(event: AccessibilityEvent): Boolean {
         return event.className == "com.ss.android.ugc.aweme.detail.ui.DetailActivity"
+    }
+
+    private fun isInFollow(event: AccessibilityEvent): Boolean {
+        return event.className == "com.ss.android.ugc.aweme.following.ui.FollowRelationTabActivity"
     }
 
     private fun isShowDeleteDialog(event: AccessibilityEvent): Boolean {
@@ -130,6 +150,20 @@ class DislikeAccessibilityService : AccessibilityService() {
         return null
     }
 
+    private fun findFollowedButton(nodeInfo: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+        if (nodeInfo != null) {
+            val nodeList = nodeInfo.findAccessibilityNodeInfosByText("已关注")
+            if (nodeList != null && nodeList.isNotEmpty()) {
+                for (childNodeInfo in nodeList) {
+                    if ("android.widget.TextView" == childNodeInfo.className) {
+                        return childNodeInfo
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     private fun dispatchGestureClick(x: Float, y: Float) {
         val path = Path()
         path.moveTo(x, y)
@@ -157,6 +191,10 @@ class DislikeAccessibilityService : AccessibilityService() {
 
     private fun nodeClick(nodeInfo: AccessibilityNodeInfo) {
         nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+    }
+
+    private fun nodeScrollForward(nodeInfo: AccessibilityNodeInfo) {
+        nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
     }
 
     private fun back() {
